@@ -57,10 +57,6 @@ def warning(msg):
         print('\x1b[0;31;40m' + msg + '\x1b[0m')
 
 
-def get_points():                                           # for test_correct
-    return I.points
-
-
 def threader_timer():
     while I.time_left != 0 and I.game_end != 1:
         timer()
