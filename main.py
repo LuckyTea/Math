@@ -36,6 +36,8 @@ def game():
             if check_answer(answer,x,y) == 1 or I.time_left == 0:
                 break
         except ValueError:
+            if I.time_left == 0:
+                break
             warning('Only numbers!')
         except (KeyboardInterrupt, EOFError):
             warning('\nAbort!')
