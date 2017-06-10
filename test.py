@@ -18,5 +18,15 @@ class check_answer(unittest.TestCase):
         self.assertEqual(m.check_answer(answer,x,y), 0)
         self.assertEqual(m.get_points(), 0)
 
+
+class check_timer(unittest.TestCase):
+    def test_timer_count(self):
+        m.I.time_left = 1
+        m.timer()
+        self.assertEqual(m.I.time_left, 0)
+        self.assertEqual(m.I.duration, 1)
+        self.assertEqual(m.I.game_end, 1)
+        m.Initiation()
+
 if __name__ == '__main__':
     unittest.main()
