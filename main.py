@@ -17,14 +17,13 @@ class Initiation():
 
 
 def timer():
-    while I.time_left != 0 and I.game_end != 1:
-        time.sleep(1)
-        with I.time_left_lock:
-            I.time_left -= 1
-        I.duration += 1
+    time.sleep(1)
+    with I.time_left_lock:
+        I.time_left -= 1
+    I.duration += 1
     if I.time_left == 0:
         warning("\nTime's up!")
-    I.game_end = 1
+        I.game_end = 1
 
 
 def game():
@@ -63,7 +62,8 @@ def get_points():                                           # for test_correct
 
 
 def threader_timer():
-    timer()
+    while I.time_left != 0 and I.game_end != 1:
+        timer()
     I.q.task_done()
 
 
