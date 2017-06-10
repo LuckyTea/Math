@@ -32,5 +32,15 @@ class check_answer(unittest.TestCase):
         self.assertEqual(m.check_answer(answer,x,y), 0)
         self.assertEqual(m.I.points, 0)
 
+
+class check_reward(unittest.TestCase):
+    def setUp(self):
+        m.I.__init__()
+
+    def test_reward_gain(self):
+        m.reward()
+        self.assertEqual(m.I.points, 1)
+        self.assertEqual(m.I.time_left, 13)
+
 if __name__ == '__main__':
     unittest.main()

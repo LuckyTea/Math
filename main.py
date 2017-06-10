@@ -49,11 +49,17 @@ def check_answer(answer,x,y):
     if answer == (x + y):
         correct = 'Correct! Time left: {} sec.'.format(I.time_left)
         message(correct,1)
-        I.points += 1
+        reward()
         return 1
     wrong = 'Wrong! Time left: {} sec.'.format(I.time_left)
     message(wrong)
     return 0
+
+
+def reward():
+    with I.time_left_lock:
+        I.time_left += 1
+    I.points += 1
 
 
 def message(msg,type=0):
