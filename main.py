@@ -22,7 +22,7 @@ def timer():
         I.time_left -= 1
     I.duration += 1
     if I.time_left == 0:
-        warning("\nTime's up!")
+        message("\nTime's up!")
         I.game_end = 1
 
 
@@ -38,9 +38,9 @@ def game():
         except ValueError:
             if I.time_left == 0:
                 break
-            warning('Only numbers!')
+            message('Only numbers!')
         except (KeyboardInterrupt, EOFError):
-            warning('\nAbort!')
+            message('\nAbort!')
             I.game_end = 1
             break
 
@@ -48,17 +48,21 @@ def game():
 def check_answer(answer,x,y):
     if answer == (x + y):
         correct = 'Correct! Time left: {} sec.'.format(I.time_left)
-        warning(correct)
+        message(correct,1)
         I.points += 1
         return 1
     wrong = 'Wrong! Time left: {} sec.'.format(I.time_left)
-    warning(wrong)
+    message(wrong)
     return 0
 
 
-def warning(msg):
-    with I.print_lock:
-        print('\x1b[0;31;40m' + msg + '\x1b[0m')
+def message(msg,type=0):
+    if type == 0:                                            # red
+        with I.print_lock:
+            print('\x1b[0;31;40m' + msg + '\x1b[0m')
+    else:                                                   # green
+        with I.print_lock:
+            print('\x1b[0;32;40m' + msg + '\x1b[0m')
 
 
 def threader_timer():
@@ -86,7 +90,8 @@ def main():
         I.q.join()
     except KeyboardInterrupt:
         ...
-    print(' === Game Over ===\nPoints: {}\nDuration: {}'.format(I.points, I.duration))
+    msg = ' === Game Over ===\nPoints: {}\nDuration: {}'.format(I.points, I.duration)
+    message(msg,1)
 
 
 if __name__ == '__main__':
