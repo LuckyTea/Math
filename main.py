@@ -45,10 +45,12 @@ def game():
 
 def check_answer(answer,x,y):
     if answer == (x + y):
-        warning('Correct!')
+        correct = 'Correct! Time left: {} sec.'.format(I.time_left)
+        warning(correct)
         I.points += 1
         return 1
-    warning('Wrong!')
+    wrong = 'Wrong! Time left: {} sec.'.format(I.time_left)
+    warning(wrong)
     return 0
 
 
