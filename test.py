@@ -2,7 +2,7 @@ import unittest
 import main as m
 
 
-class check_timer(unittest.TestCase):
+class timer(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
 
@@ -14,7 +14,7 @@ class check_timer(unittest.TestCase):
         self.assertEqual(m.I.game_end, 1)
 
 
-class check_answer(unittest.TestCase):
+class answer(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
 
@@ -33,14 +33,31 @@ class check_answer(unittest.TestCase):
         self.assertEqual(m.I.points, 0)
 
 
-class check_reward(unittest.TestCase):
+class reward(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
 
-    def test_reward_gain(self):
+    def test_reward_lose(self):
+        m.I.combo = 5
+        m.I.combo_max = 99
+        m.I.points = 5
         m.reward()
+        self.assertEqual(m.I.combo, 0)
+        self.assertEqual(m.I.combo_max, 99)
+        self.assertEqual(m.I.points, 5)
+
+    def test_reward_gain(self):
+        m.reward(1)
         self.assertEqual(m.I.points, 1)
-        self.assertEqual(m.I.time_left, 13)
+        self.assertEqual(m.I.time_left, 11)
+        self.assertEqual(m.I.combo, 1)
+        self.assertEqual(m.I.combo_max, 1)
+
+    def test_reward_combo_max(self):
+        m.I.combo = 5
+        m.reward(1)
+        self.assertEqual(m.I.combo, 5)
+        self.assertEqual(m.I.points, 5)
 
 if __name__ == '__main__':
     unittest.main()

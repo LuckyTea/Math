@@ -8,9 +8,11 @@ import time
 class Initiation():
     def __init__(self):
         self.q = Queue()
+        self.combo = 0
+        self.combo_max = 0
+        self.duration = 0
         self.game_end = 0
         self.points = 0
-        self.duration = 0
         self.time_left = 10
         self.print_lock = threading.Lock()
         self.time_left_lock = threading.Lock()
@@ -49,21 +51,32 @@ def check_answer(answer,x,y):
     if answer == (x + y):
         correct = 'Correct! Time left: {} sec.'.format(I.time_left)
         message(correct,1)
-        reward()
+        reward(1)
         return 1
     wrong = 'Wrong! Time left: {} sec.'.format(I.time_left)
     message(wrong)
+    reward()
     return 0
 
 
-def reward():
-    with I.time_left_lock:
-        I.time_left += 1
-    I.points += 1
+def reward(type=0):
+    if type == 0:
+        I.combo = 0
+    elif type == 1:
+        with I.time_left_lock:
+            I.time_left += 1
+        I.points += 1 if I.combo < 2 else I.combo
+        I.combo += 1 if I.combo < 5 else 0
+        I.combo_max = I.combo if I.combo >= I.combo_max else I.combo_max
+
+
+def game_over():
+    msg = '\n === Game Over ===\nPoints: {}\nMax Combo: {}\nDuration: {}'.format(I.points, I.combo_max, I.duration)
+    message(msg,1)
 
 
 def message(msg,type=0):
-    if type == 0:                                            # red
+    if type == 0:                                           # red
         with I.print_lock:
             print('\x1b[0;31;40m' + msg + '\x1b[0m')
     else:                                                   # green
@@ -96,8 +109,7 @@ def main():
         I.q.join()
     except KeyboardInterrupt:
         ...
-    msg = ' === Game Over ===\nPoints: {}\nDuration: {}'.format(I.points, I.duration)
-    message(msg,1)
+    game_over()
 
 
 if __name__ == '__main__':
