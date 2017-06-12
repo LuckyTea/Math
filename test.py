@@ -19,17 +19,15 @@ class answer(unittest.TestCase):
         m.I.__init__()
 
     def test_answer_correct(self):
+        user = 4
         answer = 4
-        x = 2
-        y = 2
-        self.assertEqual(m.check_answer(answer,x,y), 1)
+        self.assertEqual(m.check_answer(user,answer), 1)
         self.assertEqual(m.I.points, 1)
 
     def test_answer_wrong(self):
+        user = 4
         answer = 5
-        x = 2
-        y = 2
-        self.assertEqual(m.check_answer(answer,x,y), 0)
+        self.assertEqual(m.check_answer(user,answer), 0)
         self.assertEqual(m.I.points, 0)
 
 
@@ -46,18 +44,27 @@ class reward(unittest.TestCase):
         self.assertEqual(m.I.combo_max, 99)
         self.assertEqual(m.I.points, 5)
 
-    def test_reward_gain(self):
+    def test_reward_gain_vlv0(self):
         m.reward(1)
         self.assertEqual(m.I.points, 1)
         self.assertEqual(m.I.time_left, 11)
         self.assertEqual(m.I.combo, 1)
         self.assertEqual(m.I.combo_max, 1)
 
-    def test_reward_combo_max(self):
-        m.I.combo = 5
+    def test_reward_gain_vlv4(self):
+        m.I.lvl = 4
         m.reward(1)
-        self.assertEqual(m.I.combo, 5)
         self.assertEqual(m.I.points, 5)
+        self.assertEqual(m.I.time_left, 12)
+        self.assertEqual(m.I.combo, 1)
+        self.assertEqual(m.I.combo_max, 1)
+
+    def test_reward_gain_combo_max(self):
+        m.I.combo = 20
+        m.reward(1)
+        self.assertEqual(m.I.combo, 20)
+        self.assertEqual(m.I.lvl, 4)
+
 
 if __name__ == '__main__':
     unittest.main()

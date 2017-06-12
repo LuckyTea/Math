@@ -10,10 +10,12 @@ class Initiation():
         self.q = Queue()
         self.combo = 0
         self.combo_max = 0
+        self.combo_limit = 20
         self.duration = 0
         self.game_end = 0
         self.points = 0
         self.time_left = 10
+        self.lvl = 0
         self.print_lock = threading.Lock()
         self.time_left_lock = threading.Lock()
 
@@ -29,13 +31,11 @@ def timer():
 
 
 def game():
-    x = r.randint(0,10)
-    y = r.randint(0,10)
-    ss = '{} + {} = '.format(x,y)
+    ss = task()
     while 1:
         try:
-            answer = int(input(ss))
-            if check_answer(answer,x,y) == 1 or I.time_left == 0:
+            user = int(input(ss[0]))
+            if check_answer(user,ss[1]) == 1 or I.time_left == 0:
                 break
         except ValueError:
             if I.time_left == 0:
@@ -47,14 +47,42 @@ def game():
             break
 
 
-def check_answer(answer,x,y):
-    if answer == (x + y):
-        correct = 'Correct! Time left: {} sec.'.format(I.time_left)
-        message(correct,1)
+def task():
+    o = ('+', '-', '*', '/')
+    operation = {
+        '+': (lambda x,y: x + y),
+        '-': (lambda x,y: x - y),
+        '*': (lambda x,y: y * y),
+        '/': (lambda x,y: y / y)
+    }
+    if I.lvl in (0,1):
+        max = {0:11, 1:51}[I.lvl]                           # a +|- b
+        a = r.randrange(0,max)
+        b = r.randrange(0,max)
+        o1 = o[r.randrange(0,2)]
+        text = '{a} {o1} {b} = '.format(a=a,b=b,o1=o1)
+        answer = operation[o1](a,b)
+        return (text,answer)
+    elif I.lvl in (2,3,4):                                  # a +|- b +|- c
+        max = {2:31, 3:61, 4:101}[I.lvl]
+        a = r.randrange(0,max)
+        b = r.randrange(0,max)
+        c = r.randrange(0,max)
+        o1 = o[r.randrange(0,2)]
+        o2 = o[r.randrange(0,2)]
+        text = '{a} {o1} {b} {o2} {c} = '.format(a=a,b=b,c=c,o1=o1,o2=o2)
+        answer = operation[o2](operation[o1](x,y),c)
+        return (text,answer)
+
+
+def check_answer(user,answer):
+    if user == answer:
+        msg = 'Correct! Time left: {} sec. Combo: {}'.format(I.time_left, I.combo)
+        message(msg,1)
         reward(1)
         return 1
-    wrong = 'Wrong! Time left: {} sec.'.format(I.time_left)
-    message(wrong)
+    msg = 'Wrong! Time left: {} sec.'.format(I.time_left)
+    message(msg)
     reward()
     return 0
 
@@ -63,11 +91,25 @@ def reward(type=0):
     if type == 0:
         I.combo = 0
     elif type == 1:
+        if I.lvl in (0,1):
+            point_plus = 1 if I.combo < 2 else I.combo
+            time_plus = 1
+        elif I.lvl in (2,3,4):
+            point_plus = 5 if I.combo < 2 else 5 * I.combo
+            time_plus = 2
         with I.time_left_lock:
-            I.time_left += 1
-        I.points += 1 if I.combo < 2 else I.combo
-        I.combo += 1 if I.combo < 5 else 0
+            I.time_left += time_plus
+        I.points += point_plus
+        I.combo += 1 if I.combo < I.combo_limit else 0
         I.combo_max = I.combo if I.combo >= I.combo_max else I.combo_max
+        if I.combo_max is 5:
+            I.lvl = 1
+        elif I.combo_max is 10:
+            I.lvl = 2
+        elif I.combo_max is 15:
+            I.lvl = 3
+        elif I.combo_max is 20:
+            I.lvl = 4
 
 
 def game_over():
