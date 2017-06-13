@@ -71,7 +71,7 @@ def task():
         o1 = o[r.randrange(0,2)]
         o2 = o[r.randrange(0,2)]
         text = '{a} {o1} {b} {o2} {c} = '.format(a=a,b=b,c=c,o1=o1,o2=o2)
-        answer = operation[o2](operation[o1](x,y),c)
+        answer = operation[o2](operation[o1](a,b),c)
         return (text,answer)
 
 
@@ -113,7 +113,15 @@ def reward(type=0):
 
 
 def game_over():
-    msg = '\n === Game Over ===\nPoints: {}\nMax Combo: {}\nDuration: {}'.format(I.points, I.combo_max, I.duration)
+    msg = """
+┏━━━━━━━━━━┓
+┃ ==== Game Over ==== ┃
+┣━━━━━━━━━━┫
+┃ Max Combo:        {}┃
+┃ Duration:        {}┃
+┃ Points:    {}┃
+┗━━━━━━━━━━┛
+""".format(str(I.combo_max).zfill(2), str(I.duration).zfill(3), str(I.points).zfill(9))
     message(msg,1)
 
 
