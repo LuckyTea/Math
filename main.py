@@ -52,8 +52,8 @@ def task():
     operation = {
         '+': (lambda x,y: x + y),
         '-': (lambda x,y: x - y),
-        '*': (lambda x,y: y * y),
-        '/': (lambda x,y: y / y)
+        '*': (lambda x,y: x * y),
+        '/': (lambda x,y: x / y)
     }
     if I.lvl in (0,1):
         max = {0:11, 1:51}[I.lvl]                           # a +|- b
