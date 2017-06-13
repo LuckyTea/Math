@@ -14,6 +14,17 @@ class timer(unittest.TestCase):
         self.assertEqual(m.I.game_end, 1)
 
 
+class task(unittest.TestCase):
+    def setUp(self):
+        m.I.__init__()
+
+    def test_task_new_lvl_0_1(self):
+        n = m.task()
+        self.assertEqual(len(m.task()), 2)
+        self.assertEqual(type(n[0]), str)
+        self.assertEqual(type(n[1]), int)
+
+
 class answer(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
