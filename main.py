@@ -1,4 +1,5 @@
 from queue import Queue
+import json
 import random as r
 import sys
 import threading
@@ -150,6 +151,25 @@ def game_over():
 ┗━━━━━━━━━━┛
 """.format(str(I.combo_max).zfill(2), str(I.duration).zfill(3), str(I.points).zfill(9))
     message(msg,1)
+    leaderboard()
+
+
+def leaderboard():
+    while 1:
+        try:
+            content = json.load(open('leaderboard'))
+            break
+        except (FileNotFoundError, ValueError):
+            json.dump({},fp=open('leaderboard','w'),indent=4)
+    if len(content) != 0:
+        if I.points > min(map(lambda x: int(x), content)):
+            if len(content) == 5:
+                del content[str(min(map(lambda x: int(x), content)))]
+    name = input('New highscore!\nEnter your name: ')
+    content[str(I.points)] = {'name': name}
+    json.dump(content,fp=open('leaderboard','w'),indent=3)
+    for i in reversed(sorted(map(lambda x: int(x), content))):
+        print('Name: {} - Score: {}'.format(content[str(i)]['name'], str(i).zfill(9)))
 
 
 def message(msg,type=0):
