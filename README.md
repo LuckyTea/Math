@@ -2,4 +2,4 @@
 [![codecov](https://codecov.io/gh/LuckyTea/Math/branch/master/graph/badge.svg)](https://codecov.io/gh/LuckyTea/Math)
 [![Build Status](https://travis-ci.org/LuckyTea/Math.svg?branch=master)](https://travis-ci.org/LuckyTea/Math)
 # Math
-Simple math console game.
+Simple console mathematical game.
