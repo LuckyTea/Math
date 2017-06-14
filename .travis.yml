@@ -6,7 +6,7 @@ python:
   - "nightly"
 
 script:
-  - coverage run tests.py
+  - python -m unittest
 
 after_success:
   - codecov
