@@ -165,7 +165,7 @@ def leaderboard():
         if I.points > min(map(lambda x: int(x), content)):
             if len(content) == 5:
                 del content[str(min(map(lambda x: int(x), content)))]
-    name = input('New highscore!\nEnter your name: ')
+    name = input('New highscore!\nEnter your name: ')[0:15]
     content[str(I.points)] = {'name': name}
     json.dump(content,fp=open('leaderboard','w'),indent=3)
     for i in reversed(sorted(map(lambda x: int(x), content))):
