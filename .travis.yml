@@ -4,4 +4,9 @@ python:
   - "3.6-dev"
   - "3.7-dev"
   - "nightly"
-script: test.py --cov-report term-missing --cov app -v
+
+script:
+  - coverage run tests.py
+
+after_success:
+  - codecov
