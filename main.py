@@ -32,11 +32,11 @@ def timer():
 
 
 def game():
-    ss = task()
+    nt = task()                                             # generate new task
     while 1:
         try:
-            user = int(input(ss[0]))
-            if check_answer(user,ss[1]) == 1 or I.time_left == 0:
+            user = int(input(nt[0]))
+            if check_answer(user,nt[1]) == 1 or I.time_left == 0:
                 break
         except ValueError:
             if I.time_left == 0:
@@ -125,19 +125,22 @@ def reward(type=0):
         elif I.lvl in (2,3,4):
             point_plus = 5 if I.combo < 2 else 5 * I.combo
             time_plus = 2
+        elif I.lvl is 5:
+            point_plus = 10 if I.combo < 2 else 10 * I.combo
+            time_plus = 3
+        elif I.lvl in (6,7):
+            point_plus = 15 if I.combo < 2 else 15 * I.combo
+            time_plus = 5
+        elif I.lvl is 8:
+            point_plus = 30 if I.combo < 2 else 30 * I.combo
+            time_plus = 8
         with I.time_left_lock:
             I.time_left += time_plus
         I.points += point_plus
         I.combo += 1 if I.combo < I.combo_limit else 0
         I.combo_max = I.combo if I.combo >= I.combo_max else I.combo_max
-        if I.combo_max is 5:
-            I.lvl = 1
-        elif I.combo_max is 10:
-            I.lvl = 2
-        elif I.combo_max is 15:
-            I.lvl = 3
-        elif I.combo_max is 20:
-            I.lvl = 4
+        if I.combo_max in (5,10,15,20,25,30,35,40):
+            I.lvl = {5: 1, 10: 2, 15: 3, 20: 4, 25: 5, 30: 6, 35: 7, 40: 8}[I.combo_max]
 
 
 def game_over():
