@@ -18,11 +18,14 @@ class task(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
 
-    def test_task_new_lvl_0_1(self):
-        n = m.task()
-        self.assertEqual(len(m.task()), 2)
-        self.assertEqual(type(n[0]), str)
-        self.assertEqual(type(n[1]), int)
+    def test_task_new(self):
+        lvl = (0,2,5,6,8)
+        for i in lvl:
+            m.I.lvl = i
+            n = m.task()
+            self.assertEqual(len(m.task()), 2)
+            self.assertEqual(type(n[0]), str)
+            self.assertEqual(type(n[1]), int)
 
 
 class answer(unittest.TestCase):
@@ -59,22 +62,36 @@ class reward(unittest.TestCase):
         m.reward(1)
         self.assertEqual(m.I.points, 1)
         self.assertEqual(m.I.time_left, 11)
-        self.assertEqual(m.I.combo, 1)
-        self.assertEqual(m.I.combo_max, 1)
 
     def test_reward_gain_vlv4(self):
         m.I.lvl = 4
         m.reward(1)
         self.assertEqual(m.I.points, 5)
         self.assertEqual(m.I.time_left, 12)
-        self.assertEqual(m.I.combo, 1)
-        self.assertEqual(m.I.combo_max, 1)
+
+    def test_reward_gain_vlv5(self):
+        m.I.lvl = 5
+        m.reward(1)
+        self.assertEqual(m.I.points, 10)
+        self.assertEqual(m.I.time_left, 13)
+
+    def test_reward_gain_vlv6(self):
+        m.I.lvl = 6
+        m.reward(1)
+        self.assertEqual(m.I.points, 15)
+        self.assertEqual(m.I.time_left, 15)
+
+    def test_reward_gain_vlv8(self):
+        m.I.lvl = 8
+        m.reward(1)
+        self.assertEqual(m.I.points, 30)
+        self.assertEqual(m.I.time_left, 18)
 
     def test_reward_gain_combo_max(self):
-        m.I.combo = 20
+        m.I.combo = 40
         m.reward(1)
-        self.assertEqual(m.I.combo, 20)
-        self.assertEqual(m.I.lvl, 4)
+        self.assertEqual(m.I.combo, 40)
+        self.assertEqual(m.I.lvl, 8)
 
 
 if __name__ == '__main__':
