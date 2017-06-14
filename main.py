@@ -12,11 +12,12 @@ class Initiation():
         self.combo = 0
         self.combo_max = 0
         self.combo_limit = 20
-        self.duration = 0
-        self.game_end = 0
         self.points = 0
+        self.duration = 0
         self.time_left = 10
         self.lvl = 0
+        self.game_end = 0
+        self.abort = 0
         self.print_lock = threading.Lock()
         self.time_left_lock = threading.Lock()
 
@@ -35,17 +36,18 @@ def game():
     nt = task()                                             # generate new task
     while 1:
         try:
-            user = int(input(nt[0]))
+            user = int(input(nt[0])[0:5])
             if check_answer(user,nt[1]) == 1 or I.time_left == 0:
                 break
         except ValueError:
+            message('Only numbers!')
             if I.time_left == 0:
                 break
-            message('Only numbers!')
         except (KeyboardInterrupt, EOFError):
             message('\nAbort!')
             I.game_end = 1
-            break
+            I.abort = 1
+            return
 
 
 def task():
@@ -154,16 +156,16 @@ def game_over():
 ┗━━━━━━━━━━┛
 """.format(str(I.combo_max).zfill(2), str(I.duration).zfill(3), str(I.points).zfill(9))
     message(msg,1)
-    return leaderboard()
+    if I.abort != 1:
+        return leaderboard()
 
 
 def leaderboard():
-    while 1:
-        try:
-            content = json.load(open('leaderboard'))
-            break
-        except (FileNotFoundError, ValueError):
-            json.dump({},fp=open('leaderboard','w'),indent=4)
+    try:
+        content = json.load(open('leaderboard'))
+    except (FileNotFoundError, ValueError):
+        json.dump({},fp=open('leaderboard','w'),indent=4)
+        content = json.load(open('leaderboard'))
     if len(content) != 0:
         if I.points > min(map(lambda x: int(x), content)):
             if len(content) == 5:
@@ -172,7 +174,7 @@ def leaderboard():
     content[str(I.points)] = {'name': name}
     json.dump(content,fp=open('leaderboard','w'),indent=3)
     for i in reversed(sorted(map(lambda x: int(x), content))):
-        print('Name: {} - Score: {}'.format(content[str(i)]['name'], str(i).zfill(9)))
+        print('{} - {}'.format(str(i).zfill(9),content[str(i)]['name']))
 
 
 def message(msg,type=0):
