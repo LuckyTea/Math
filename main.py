@@ -154,7 +154,7 @@ def game_over():
 ┗━━━━━━━━━━┛
 """.format(str(I.combo_max).zfill(2), str(I.duration).zfill(3), str(I.points).zfill(9))
     message(msg,1)
-    leaderboard()
+    return leaderboard()
 
 
 def leaderboard():

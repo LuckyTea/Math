@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import main as m
 
 
@@ -92,6 +93,15 @@ class reward(unittest.TestCase):
         m.reward(1)
         self.assertEqual(m.I.combo, 40)
         self.assertEqual(m.I.lvl, 8)
+
+
+class game_over(unittest.TestCase):
+    def setUp(self):
+        m.I.__init__()
+
+    @patch('__main__.m.leaderboard', return_value='Done!')
+    def test_game_over(self, input):
+        self.assertEqual(m.game_over(), 'Done!')
 
 
 if __name__ == '__main__':
