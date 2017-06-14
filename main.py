@@ -99,7 +99,7 @@ def task():
         o1 = o[r.randrange(0,2)]
         o2 = o[r.randrange(0,2)]
         text = '{a} * {b} {o1} {c} {o2} {d} = '.format(a=a,b=b,c=c,d=d,o1=o1,o2=o2)
-        answer = operation[o2](operation[o1](operation['*'](a,b),c))
+        answer = operation[o2](operation[o1](operation['*'](a,b),c),d)
         return (text,answer)
 
 
