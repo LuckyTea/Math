@@ -15,6 +15,23 @@ class timer(unittest.TestCase):
         self.assertEqual(m.I.game_end, 1)
 
 
+class game(unittest.TestCase):
+    def setUp(self):
+        m.I.__init__()
+
+    @patch('__main__.m.task', return_value=('msg',1))
+    @patch('__main__.m.input', return_value='1')
+    def test_game_correct(self,nt,input):
+        m.game()
+        self.assertEqual(m.I.points, 1)
+
+    @patch('__main__.m.task', return_value=('msg',1))
+    @patch('__main__.m.input', return_value='some')
+    def test_game_raise_ValueError(self,nt,input):
+        m.I.time_left = 0
+        self.assertRaises(ValueError, m.game())
+
+
 class task(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
@@ -100,9 +117,8 @@ class game_over(unittest.TestCase):
         m.I.__init__()
 
     @patch('__main__.m.leaderboard', return_value='Done!')
-    def test_game_over(self, input):
+    def test_game_over(self, leaderboard):
         self.assertEqual(m.game_over(), 'Done!')
-
 
 if __name__ == '__main__':
     unittest.main()
