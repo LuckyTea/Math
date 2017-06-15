@@ -1,3 +1,4 @@
+import os
 import unittest
 from unittest.mock import patch
 import main as m
@@ -119,6 +120,50 @@ class game_over(unittest.TestCase):
     @patch('__main__.m.leaderboard', return_value='Done!')
     def test_game_over(self, leaderboard):
         self.assertEqual(m.game_over(), 'Done!')
+
+
+class leaderboard(unittest.TestCase):
+    def setUp(self):
+        m.I.__init__()
+
+    @patch('__main__.m.print', return_value='')
+    @patch('__main__.m.input', return_value='Cirno')
+    def test_leaderboard_normal(self, print, input):
+        m.I.leaderboard = 'leaderboard_test'
+        m.I.points = 999
+        m.leaderboard()
+        self.assertTrue('999' in open('leaderboard_test').read())
+        os.remove('leaderboard_test')
+
+    @patch('__main__.m.print', return_value='')
+    @patch('__main__.m.input', return_value='Cirno')
+    def test_leaderboard_full(self, print, input):
+        with open('leaderboard_test', 'w') as file:
+            file.write("""
+{
+   "8": {
+      "name": "Cirno"
+   },
+   "7": {
+      "name": "Cirno"
+   },
+   "6": {
+      "name": "Cirno"
+   },
+   "5": {
+      "name": "Cirno"
+   },
+   "4": {
+      "name": "Not Cirno"
+   }
+}
+                """)
+        m.I.leaderboard = 'leaderboard_test'
+        m.I.points = 999
+        m.leaderboard()
+        self.assertFalse('Not Cirno' in open('leaderboard_test').read())
+        os.remove('leaderboard_test')
+
 
 if __name__ == '__main__':
     unittest.main()
