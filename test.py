@@ -164,6 +164,12 @@ class leaderboard(unittest.TestCase):
         self.assertFalse('Not Cirno' in open('leaderboard_test').read())
         os.remove('leaderboard_test')
 
+    @patch('__main__.m.print', return_value='')
+    @patch('__main__.m.input', return_value='Cirno')
+    def test_leaderboard_FileNotFoundError(self, print, input):
+        m.I.leaderboard = ''
+        self.assertRaises(FileNotFoundError, m.leaderboard())
+
 
 if __name__ == '__main__':
     unittest.main()

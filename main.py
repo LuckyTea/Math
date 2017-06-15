@@ -165,8 +165,11 @@ def leaderboard():
     try:
         content = json.load(open(I.leaderboard))
     except (FileNotFoundError, ValueError):
-        json.dump({'9': {'name': 'Cirno'}},fp=open(I.leaderboard,'w'),indent=3)
-        content = json.load(open(I.leaderboard))
+        try:
+            json.dump({'9': {'name': 'Cirno'}},fp=open(I.leaderboard,'w'),indent=3)
+            content = json.load(open(I.leaderboard))
+        except FileNotFoundError:
+            return
     if I.points > 0 and (I.points > min(map(lambda x: int(x), content)) or len(content) < 5):
         if len(content) == 5:
             del content[str(min(map(lambda x: int(x), content)))]
