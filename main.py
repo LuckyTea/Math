@@ -61,17 +61,17 @@ def task():
     }
     if I.lvl in (0,1):                                      # a +|- b
         max = {0:11, 1:51}[I.lvl]
-        a = r.randrange(0,max)
-        b = r.randrange(0,max)
+        a = r.randrange(1,max)
+        b = r.randrange(1,max)
         o1 = o[r.randrange(0,2)]
         text = '{a} {o1} {b} = '.format(a=a,b=b,o1=o1)
         answer = operation[o1](a,b)
         return (text,answer)
     elif I.lvl in (2,3,4):                                  # a +|- b +|- c
         max = {2:31, 3:61, 4:101}[I.lvl]
-        a = r.randrange(0,max)
-        b = r.randrange(0,max)
-        c = r.randrange(0,max)
+        a = r.randrange(1,max)
+        b = r.randrange(1,max)
+        c = r.randrange(1,max)
         o1 = o[r.randrange(0,2)]
         o2 = o[r.randrange(0,2)]
         text = '{a} {o1} {b} {o2} {c} = '.format(a=a,b=b,c=c,o1=o1,o2=o2)
@@ -79,26 +79,26 @@ def task():
         return (text,answer)
     elif I.lvl is 5:                                        # a * b
         max = 11
-        a = r.randrange(0,max)
-        b = r.randrange(0,max)
+        a = r.randrange(1,max)
+        b = r.randrange(1,max)
         text = '{a} * {b} = '.format(a=a,b=b)
         answer = operation['*'](a,b)
         return (text,answer)
     elif I.lvl in (6, 7):                                   # a * b +|- c
         max = {6:(11,11,51), 7:(21,11,51)}[I.lvl]
-        a = r.randrange(0,max[0])
-        b = r.randrange(0,max[1])
-        c = r.randrange(0,max[2])
+        a = r.randrange(1,max[0])
+        b = r.randrange(1,max[1])
+        c = r.randrange(1,max[2])
         o1 = o[r.randrange(0,2)]
         text = '{a} * {b} {o1} {c} = '.format(a=a,b=b,c=c,o1=o1)
         answer = operation[o1](operation['*'](a,b),c)
         return (text,answer)
     elif I.lvl is 8:                                        # a * b +|- c +|- d
         max = (16,51)
-        a = r.randrange(0,max[0])
-        b = r.randrange(0,max[0])
-        c = r.randrange(0,max[1])
-        d = r.randrange(0,max[1])
+        a = r.randrange(1,max[0])
+        b = r.randrange(1,max[0])
+        c = r.randrange(1,max[1])
+        d = r.randrange(1,max[1])
         o1 = o[r.randrange(0,2)]
         o2 = o[r.randrange(0,2)]
         text = '{a} * {b} {o1} {c} {o2} {d} = '.format(a=a,b=b,c=c,d=d,o1=o1,o2=o2)
@@ -112,9 +112,10 @@ def check_answer(user,answer):
         message(msg,1)
         reward(1)
         return 1
-    msg = 'Wrong! Time left: {} sec.'.format(I.time_left)
-    message(msg)
-    reward()
+    if I.time_left != 0:
+        msg = 'Wrong! Time left: {} sec.'.format(I.time_left)
+        message(msg)
+        reward()
     return 0
 
 
