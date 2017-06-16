@@ -38,7 +38,7 @@ class task(unittest.TestCase):
         m.I.__init__()
 
     def test_task_new(self):
-        lvl = (0,2,5,6,8)
+        lvl = range(0,9)
         for i in lvl:
             m.I.lvl = i
             n = m.task()
