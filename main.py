@@ -121,7 +121,7 @@ def reward(type=0):
         I.points += point_plus
         I.combo += 1 if I.combo < I.combo_limit else 0
         I.combo_max = I.combo if I.combo >= I.combo_max else I.combo_max
-        if I.combo_max in (5,10,15,20,25,30,35,40):
+        if I.combo_max % 5 == 0:
             I.lvl = {5: 1, 10: 2, 15: 3, 20: 4, 25: 5, 30: 6, 35: 7, 40: 8}[I.combo_max]
 
 
