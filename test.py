@@ -20,15 +20,15 @@ class game(unittest.TestCase):
     def setUp(self):
         m.I.__init__()
 
-    @patch('__main__.m.task', return_value=('msg',1))
+    @patch('__main__.m.task', return_value=('msg', 1))
     @patch('__main__.m.input', return_value='1')
-    def test_game_correct(self,nt,input):
+    def test_game_correct(self, nt, input):
         m.game()
         self.assertEqual(m.I.points, 1)
 
-    @patch('__main__.m.task', return_value=('msg',1))
+    @patch('__main__.m.task', return_value=('msg', 1))
     @patch('__main__.m.input', return_value='some')
-    def test_game_raise_ValueError(self,nt,input):
+    def test_game_raise_ValueError(self, nt, input):
         m.I.time_left = 0
         self.assertRaises(ValueError, m.game())
 
@@ -38,7 +38,7 @@ class task(unittest.TestCase):
         m.I.__init__()
 
     def test_task_new(self):
-        lvl = range(0,9)
+        lvl = range(0, 9)
         for i in lvl:
             m.I.lvl = i
             n = m.task()
@@ -54,13 +54,13 @@ class answer(unittest.TestCase):
     def test_answer_correct(self):
         user = 4
         answer = 4
-        self.assertEqual(m.check_answer(user,answer), 1)
+        self.assertEqual(m.check_answer(user, answer), 1)
         self.assertEqual(m.I.points, 1)
 
     def test_answer_wrong(self):
         user = 4
         answer = 5
-        self.assertEqual(m.check_answer(user,answer), 0)
+        self.assertEqual(m.check_answer(user, answer), 0)
         self.assertEqual(m.I.points, 0)
 
 
